@@ -1,0 +1,93 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>栏目管理</h4>
+</div>
+<div class="table-function">
+    <a href="__URL__category/add" class="botton btn blue">新建栏目</a>
+    <a href="__URL__category/addlink" class="botton btn blue">新建外部链接</a>
+</div>
+<table class="table-body">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th width="25%">栏目名称</th>
+        <th>所属模型</th>
+        <th>是否显示</th>
+        <th width="5%">排序</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data" id="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td class="content-title" data-img="{$vo.images}">{$vo.spear}{$vo.html}{$vo.cate_name}</td>
+
+            <td>
+                {if condition="($vo.cate_type == 1)"}
+                    文章模型
+                {elseif condition="($vo.cate_type == 2)"/}
+                    单页模型
+                {elseif condition="($vo.cate_type == 3)"/}
+                    下载模型
+                {elseif condition="($vo.link neq null && $vo.cate_type == 4)"/}
+                    链接
+                {/if}
+            </td>
+            <td>
+                {if condition="($vo.is_show == 1)"}
+                    <a class="is_shwo" href="__URL__category/isDisplay?id={$vo.id}&is_show=0"><i class="iconfont">&#xe783;</i></a>
+                {else /}
+                    <a class="is_hide" href="__URL__category/isDisplay?id={$vo.id}&is_show=1"><i class="iconfont">&#xe6e9;</i></a>
+                {/if}
+            </td>
+            <td><input class="order" type="text" data-id="{$vo.id}" value="{$vo.order}"></td>
+            <td>
+                <a href="#" class="btn rose">查看</a>
+                <a href="__URL__category/show?id={$vo.id}" class="btn blue">编辑</a>
+                <a href="javascript:void(0);" data-id="{$vo.id}" class="btn yellow delete">删除</a>
+            </td>
+        </tr>
+    {/volist}
+    </tbody>
+</table>
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script>
+    //ajax 修改内容排序
+    $('.order').change(function () {
+        $id = $(this).attr('data-id');
+        $order = {'order':$(this).val(),'id':$id};
+        $.ajax({
+            url:'__URL__category/isDisplay',
+            data:$order,
+            type:'post',
+            success:function () {
+                window.location.href = '__URL__category/index'
+            }
+        })
+    })
+    //ajax 删除数据
+    $('.delete').on('click',function () {
+        $id = {'id':$(this).attr('data-id')};
+        if(confirm("确定要删除吗 ？")){
+            $.ajax({
+                url:'__URL__category/delete',
+                data:$id,
+                type:'post',
+                success:function () {
+                    window.location.href = '__URL__category/index'
+                }
+            })
+        }
+    })
+    $('.content-title').hover(function () {
+        $img = $(this).attr('data-img');
+        if($img){
+            $(this).append('<div class="img-postion"><img style="position: absolute;left:20%;max-width: 180px;border:3px solid #fff;" class="cate-img-view" src="__UPLOAD__' + $img +'" /></div>')
+        }
+    },function () {
+        $('.cate-img-view').remove()
+    })
+</script>
+{include file='public/header' /}

@@ -1,0 +1,86 @@
+{include file='public/header' /}
+
+<header>
+    <a href="#">ruofeiblog.com</a>
+</header>
+<div id="login">
+    <div class="loginBox">
+        <form class="loginForm">
+            <div class="panel">
+                <div class="panel-title">
+                    <h5>Ruofeiblog 欢迎您！</h5>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group-block">
+                        <label for="username">用户名</label>
+                        <div class="form-group-merge">
+                            <input type="text" name="username" id="username" required value="" minlength="4" maxlength="20" placeholder="用户名">
+                            <i class="iconfont">&#xe61e;</i>
+                        </div>
+                    </div>
+                    <div class="form-group-block">
+                        <label for="password">密码</label>
+                        <div class="form-group-merge">
+                            <input type="password" name="password" id="password" required value="" placeholder="密码">
+                            <i class="iconfont">&#xe6d1;</i>
+                        </div>
+                    </div>
+                    <div class="form-group-block">
+                        <label for="captche">验证码</label>
+                        <div class="form-group-merge">
+                            <input type="text" name="captche" id="captche" value="" required placeholder="验证码">
+                            <div class="captcha">
+                                <img src="images/captcha.png" alt="captche" title="点击切换" onclick="this.src='/captcha?id='+Math.random()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-block">
+                        <button name="submit" class="btn login">登录</button>
+                    </div>
+                    <p class="clearfix">
+                        <span class="errorInfo"></span>
+                        <a href="#">忘记密码？</a>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+<script>
+    $(function(){
+        //jquery.validate
+        $(".loginForm").validate({
+            submitHandler: function() {
+                //验证通过后 的js代码写在这里
+
+                $data = {'username': $('#username').val(),'password':$('#password').val()};
+
+                $.ajax({
+                    type:'POST',
+                    url:'__URL__login/login',
+                    data: $data,
+                    success:function (data) {
+                        if(data.code == 0){
+                            $('.errorInfo').html('<i class="iconfont">&#xe621;</i> '+data.msg);
+                        }else if(data.code == 200){
+                            $('.errorInfo').html('<i class="iconfont">&#xe621;</i> '+data.msg);
+                            window.location.href = '__URL__index/';
+                        }
+                    }
+                })
+
+            }
+        })
+
+    })
+</script>
+
+<footer>
+    <p><a href="#">2016 © Ruofeiblog.com</a></p>
+</footer>
+
+{include file='public/footer' /}

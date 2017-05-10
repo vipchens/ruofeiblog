@@ -1,0 +1,112 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>新建栏目</h4>
+</div>
+
+<form action="__URL__category/insert" method="post" class="addCategoryForm">
+    <div class="col-md-6">
+        <div class="panel blue-border">
+            <div class="panel-title">
+                <h5>基本信息</h5>
+            </div>
+            <div class="panel-body">
+                <div class="form-group-block">
+                    <label>栏目名称 <i>*</i></label>
+                    <input type="text" name="cate_name" required placeholder="栏目名称">
+                </div>
+                <div class="form-group-block">
+                    <label>上级目录 <i>*</i></label>
+                    <select name="fid">
+                        <option value="0" selected>无</option>
+                        {volist name="data" id="vo"}
+                            <option value="{$vo.id}">{$vo.spear}{$vo.html}{$vo.cate_name}</option>
+                        {/volist}
+
+                    </select>
+                </div>
+                <div class="form-group-block">
+                    <label>所属类型 <i>*</i></label>
+                    <select name="cate_type">
+                        <option value="0" selected>文章类型</option>
+                        <option value="1">单页模型</option>
+                        <option value="2">下载模型</option>
+                    </select>
+                </div>
+                <div class="form-group-block">
+                    <label>栏目图片 <i>*</i></label>
+                    <div class="form-group-merge">
+                        <input name="images" type="file" value="">
+                        <button class="btn blue">上传</button>
+                    </div>
+                </div>
+                <div class="form-group-block">
+                    <label>栏目描述</label>
+                    <textarea name="cate_desc" rows="4" placeholder="栏目描述"></textarea>
+                </div>
+            </div>
+            <div class="form-group-block">
+                <label>栏目排序</label>
+                <input type="text" name="order" placeholder="栏目排序">
+            </div>
+            <div class="form-group-block">
+                <label>是否显示 <i>*</i></label>
+                <select name="is_show">
+                    <option value="1" selected>是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+
+        </div>
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl">重置</button>
+    </div>
+    <div class="col-md-6">
+        <div class="panel blue-border">
+            <div class="panel-title">
+                <h5>模版设置</h5>
+            </div>
+            <div class="panel-body">
+                <div class="form-group-block">
+                    <label>首页模版</label>
+                    <input type="text" name="index_tpl" placeholder="首页模版">
+                </div>
+                <div class="form-group-block">
+                    <label>列表页模版</label>
+                    <input type="text" name="list_tpl" placeholder="列表页模版">
+                </div>
+                <div class="form-group-block">
+                    <label>内容页模版</label>
+                    <input type="text" name="content_tpl" placeholder="内容页模版">
+                </div>
+            </div>
+            <br>
+            <div class="panel-title">
+                <h5>SEO优化</h5>
+            </div>
+            <div class="form-group-block">
+                <label>url优化</label>
+                <input type="text" name="cate_url" placeholder="url优化">
+            </div>
+            <div class="form-group-block">
+                <label>关键词</label>
+                <input type="text" name="keywords" placeholder="关键词">
+            </div>
+            <div class="form-group-block">
+                <label>描述</label>
+                <input type="text" name="description" placeholder="描述">
+            </div>
+            <div class="form-group-block">
+                <label>备注</label>
+                <input type="text" name="cate_note" placeholder="备注,为了排版">
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+
+<script src="__ADMIN__js/form-validate.js"></script>
+
+{include file='public/footer' /}
