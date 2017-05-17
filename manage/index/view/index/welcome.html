@@ -6,25 +6,160 @@
 </div>
 <div class="panel today">
     <div class="panel-title">
-        <h4>Today</h4>
+        {volist name="data" id="vo"}
+            <h4><i class="iconfont">&#xe652;</i> {$vo.provinceName} {$vo.city}</h4>
+        {/volist}
     </div>
     <div class="panel-body">
-        <p>2017年05月05日  星期五</p>
-        <span><i class="iconfont">&#xe652;</i> 深圳</span>
-        <span><i class="iconfont">&#xe77e;</i> 微风</span>
-        <span><i class="iconfont">&#xe70f;</i> 27/22℃</span>
+        <p>{:date('Y'.'年'.'m'.'月'.'d'.'日')} {$x} </p>
+    </div>
+
+    <br/>
+
+    <!-- 每日一文 -->
+    <div class="panel-title oneday">
+        <a href="javascript:void(0);" class="btn red" id="random">
+            随机文章
+        </a>
+        {foreach $one as $vo}
+        <h5>{$vo.title}</h5>
+        <br/>
+        <span class="count">字数： {$vo.wc}</span>
+        <span class="author">作者： {$vo.author}</span>
+        <p>{$vo.content}</p>
+
+        {/foreach}
     </div>
 </div>
-<div class="panel today">
-    <div class="panel-title">
-        <h4>今天共有1条评论</h4>
-    </div>
+
+<div class="panel today col-md-12">
     <div class="panel-body">
-        <p>2017年05月05日  星期五</p>
-        <p><i class="iconfont">&#xe652;</i> 深圳</p>
-        <p><i class="iconfont">&#xe77e;</i> 微风</p>
-        <p><i class="iconfont">&#xe70f;</i> 27/22℃</p>
+        <table  class="table-body">
+            {volist name="data" id="vo"}
+            <thead>
+            <tr>
+                {foreach $vo.weatherDetailsInfo.weather3HoursDetailsInfos as $list}
+                    <td>{$list.startTime}</td>
+                {/foreach}
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {foreach $vo.weatherDetailsInfo.weather3HoursDetailsInfos as $list}
+                        <td>
+                            {if condition="$list.weather == '多云'"}
+                                <i class="iconfont">&#xe6f3;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '云'"}
+                                <i class="iconfont">&#xe6f8;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '小雨'"}
+                                <i class="iconfont">&#xe6f7;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '阵雨'"}
+                                <i class="iconfont">&#xe6fb;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '少云'"}
+                                <i class="iconfont">&#xe6f3;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '阴'"}
+                                <i class="iconfont">&#xe6f8;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '少云'"}
+                                <i class="iconfont">&#xe6f8;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '晴'"}
+                                <i class="iconfont">&#xe6f5;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '暴雪'"}
+                                <i class="iconfont">&#xe6f1;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '暴雨'"}
+                                <i class="iconfont">&#xe6f2;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '小雪'"}
+                                <i class="iconfont">&#xe6f6;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '冰雹'"}
+                                <i class="iconfont">&#xe77d;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '中雪'"}
+                                <i class="iconfont">&#xe6fc;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '阵雪'"}
+                                <i class="iconfont">&#xe6fa;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '雾霾'"}
+                                <i class="iconfont">&#xe77f;</i><br/>
+                                {$list.weather}
+                            {elseif condition="$list.weather == '雾'"}
+                                <i class="iconfont">&#xe780;</i><br/>
+                                {$list.weather}
+                            {/if}
+                        </td>
+                    {/foreach}
+                </tr>
+                <tr>
+                    {foreach $vo.weatherDetailsInfo.weather3HoursDetailsInfos as $list}
+                        <td>{$list.highestTemperature} ℃</td>
+                    {/foreach}
+                </tr>
+            </tbody>
+            {/volist}
+        </table>
     </div>
 </div>
+
+<div class="panel today col-md-12">
+    <div class="panel-body">
+        <table  class="table-body">
+            {volist name="data" id="vo"}
+                <thead>
+                    <tr>
+                        {foreach $vo.indexes as $list}
+                        <td>{$list.name}</td>
+                        {/foreach}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {foreach $vo.indexes as $list}
+                            <td width="16.66666%">{$list.level}</td>
+                        {/foreach}
+                    </tr>
+                    <tr>
+                        {foreach $vo.indexes as $list}
+                         <td class="content-title">{$list.content}</td>
+                        {/foreach}
+                    </tr>
+                </tbody>
+            {/volist}
+        </table>
+    </div>
+</div>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script>
+    $('#random').click(function () {
+
+        $title = $('.oneday h5');
+        $count = $('.oneday .count');
+        $author = $('.oneday .author');
+        $content = $('.oneday p');
+
+        $.ajax({
+            url:'__URL__index/random',
+            success:function (data) {
+                console.log(data);
+                if(data){
+                    $title.html(data['data'].title);
+                    $count.html('字数： '+ data['data'].wc);
+                    $author.html('作者： '+ data['data'].author);
+                    $content.html(data['data'].content);
+                }
+            }
+        })
+    })
+</script>
 
 {include file='public/footer' /}

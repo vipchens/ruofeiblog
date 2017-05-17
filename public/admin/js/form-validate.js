@@ -1,4 +1,11 @@
 $(function(){
     $(".addCategoryForm").validate();
     $(".addLinkForm").validate();
+    $(".addContentForm").validate();
+    $(".updateAdminForm").validate();
+    $(".addAdminForm").validate();
+    $(".updateOptionForm").validate();
+    $(".updateAdminOptionForm").validate();
+    $(".updateLinkForm").validate();
+    $(".addLinkForm").validate();
 })

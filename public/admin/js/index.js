@@ -9,44 +9,26 @@ window.onload = function () {
         // 获取表格hang元素
         row = contentBody[0].children;
 
-
-    // //点击单元格时自动选中此行数据
-    for(var i = 0; i<row.length;i++){
-        for(var x = 0; x<row[i].cells.length;x++){
-            if(x!=5){
-                row[i].cells[x].onclick = function () {
-                    stopBubbling(event);
-                    if(this.parentNode.getElementsByTagName('input')[0].checked){
-                        this.parentNode.getElementsByTagName('input')[0].checked = false;
-                        selectAll[0].checked = false;
-                    }else{
-                        this.parentNode.getElementsByTagName('input')[0].checked = true;
-                    }
-                    select_total();
-                };
-            }
-        }
-
-    }
-
     // //点击表格行时自动选中此行数据
-    // for(var i = 0; i<row.length;i++){
-    //     row[i].onclick = function () {
-    //         if(this.children[0].getElementsByTagName('input')[0].checked){
-    //             this.children[0].getElementsByTagName('input')[0].checked = false;
-    //             selectAll[0].checked = false;
-    //         }else{
-    //             this.children[0].getElementsByTagName('input')[0].checked = true;
-    //         }
-    //         select_total();
-    //     };
-    // }
+    for(var i = 0; i<row.length;i++){
+        row[i].onclick = function () {
+            if(this.children[0].getElementsByTagName('input')[0].checked){
+                this.children[0].getElementsByTagName('input')[0].checked = false;
+                selectAll[0].checked = false;
+            }else{
+                this.children[0].getElementsByTagName('input')[0].checked = true;
+            }
+            select_total();
+        };
+    }
 
     //全选复选
     for(var i = 0; i<selectItem.length;i++){
         selectItem[i].onclick = function () {
-            //由于行元素和input元素都有click事件，所以调用阻止冒泡时间
+
             stopBubbling(event);
+
+            //由于行元素和input元素都有click事件，所以调用阻止冒泡时间
             if(this.className.indexOf('selectAll')>0){
                 if(!this.checked){
                     for(var j = 0; j<selectItem.length;j++) {
@@ -81,9 +63,8 @@ window.onload = function () {
         selectTotal[0].children[0].innerHTML = Total;
 
         //输出选中数据的id
-        console.log(array);
+        select_id(array);
     }
-
 
     //阻止事件 冒泡传播
     function stopBubbling(e) {

@@ -19,7 +19,7 @@ class Login extends Controller
 
         //判断验证码
 
-        $admin = Db::name('admin')->where(['username'=>$data['username'],'password'=>$data['password']])->select();
+        $admin = Db::name('admin')->where(['username'=>$data['username'],'password'=>md5($data['password'])])->select();
         if(!$admin){
             return json(array('code'=>0,'msg'=>'您的帐号或密码不正确'));
         }

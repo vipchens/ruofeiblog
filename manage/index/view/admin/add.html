@@ -1,0 +1,40 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>新增管理员信息</h4>
+</div>
+<form action="__URL__admin/insert" method="post" class="addAdminForm">
+    <div class="col-md-6">
+        <div class="panel blue-border">
+            <div class="panel-body">
+                <div class="form-group-block">
+                    <label>名称</label>
+                    <input type="text" name="nickname" required value="" placeholder="管理员昵称">
+                </div>
+                <div class="form-group-block">
+                    <label>帐号</label>
+                    <input type="text" name="username" required value="" placeholder="管理员帐号">
+                </div>
+                <div class="form-group-block">
+                    <label>新密码</label>
+                    <input type="password" name="password" id="password" placeholder="新密码，如不修改密码，请勿填写">
+                </div>
+                <div class="form-group-block">
+                    <label>确认密码</label>
+                    <input type="password" name="confirmPassword" equalTo="#password" placeholder="确认密码">
+                </div>
+                <input type="hidden" name="create_time" value="{:date('Y-m-d H:i:s')}">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl" type="reset">重置</button>
+    </div>
+</form>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+
+{include file='public/footer' /}

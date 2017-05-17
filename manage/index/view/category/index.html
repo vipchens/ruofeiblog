@@ -45,7 +45,12 @@
             <td><input class="order" type="text" data-id="{$vo.id}" value="{$vo.order}"></td>
             <td>
                 <a href="#" class="btn rose">查看</a>
-                <a href="__URL__category/show?id={$vo.id}" class="btn blue">编辑</a>
+                {if condition="($vo.link neq null && $vo.cate_type == 4)"/}
+                    <a href="__URL__category/showlink?id={$vo.id}" class="btn blue">编辑</a>
+                {else / }
+                    <a href="__URL__category/show?id={$vo.id}" class="btn blue">编辑</a>
+                {/if}
+
                 <a href="javascript:void(0);" data-id="{$vo.id}" class="btn yellow delete">删除</a>
             </td>
         </tr>
@@ -72,7 +77,7 @@
         $id = {'id':$(this).attr('data-id')};
         if(confirm("确定要删除吗 ？")){
             $.ajax({
-                url:'__URL__category/delete',
+                url:'__URL__category/delete?type=4',
                 data:$id,
                 type:'post',
                 success:function () {
@@ -84,7 +89,7 @@
     $('.content-title').hover(function () {
         $img = $(this).attr('data-img');
         if($img){
-            $(this).append('<div class="img-postion"><img style="position: absolute;left:20%;max-width: 180px;border:3px solid #fff;" class="cate-img-view" src="__UPLOAD__' + $img +'" /></div>')
+            $(this).append('<div class="img-postion"><img style="position: absolute;left:20%;top:0px;max-width: 180px;border:3px solid #fff;" class="cate-img-view" src="__UPLOAD__' + $img +'" /></div>')
         }
     },function () {
         $('.cate-img-view').remove()

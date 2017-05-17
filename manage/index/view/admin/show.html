@@ -1,0 +1,44 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>修改管理员信息</h4>
+</div>
+<form action="__URL__admin/update" method="post" class="updateAdminForm">
+    <div class="col-md-6">
+        <div class="panel blue-border">
+            <div class="panel-body">
+                <input type="hidden" name="id" value="{$data.id}">
+                <div class="form-group-block">
+                    <label>名称</label>
+                    <input type="text" name="nickname" required value="{$data.nickname}" placeholder="管理员昵称">
+                </div>
+                <div class="form-group-block">
+                    <label>帐号</label>
+                    <input type="text" name="username" disabled required value="{$data.username}" placeholder="管理员帐号">
+                </div>
+                <div class="form-group-block">
+                    <label>原密码</label>
+                    <input type="password" name="password" required placeholder="修改密码请验证原密码">
+                </div>
+                <div class="form-group-block">
+                    <label>新密码</label>
+                    <input type="password" name="newPassword" id="newPassword" required placeholder="新密码">
+                </div>
+                <div class="form-group-block">
+                    <label>确认密码</label>
+                    <input type="password" name="confirmPassword" required equalTo="#newPassword" placeholder="确认密码">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl" type="reset">重置</button>
+    </div>
+</form>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+
+{include file='public/footer' /}

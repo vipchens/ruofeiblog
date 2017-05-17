@@ -1,0 +1,28 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>Log日志</h4>
+</div>
+<table class="table-body">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th width="25%">操作人</th>
+        <th>操作内容</th>
+        <th>时间</th>
+        <th>ip</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data" id="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.user_id}</td>
+            <td>{$vo.action}</td>
+            <td>{$vo.create_time}</td>
+            <td>{$vo.ip} ({$vo.ip_address})</td>
+        </tr>
+    {/volist}
+    </tbody>
+</table>
+{include file='public/footer' /}

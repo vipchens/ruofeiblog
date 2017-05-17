@@ -1,0 +1,82 @@
+{include file='public/header' /}
+
+
+<div class="table-title">
+    <h4>友情链接管理</h4>
+</div>
+
+<div class="table-function col-md-10">
+    <a href="__URL__link/add" class="botton btn blue pull-left">新建友情链接</a>
+</div>
+<table class="table-body col-md-12">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th class="content-title">链接标题</th>
+        <th>链接</th>
+        <th>图标</th>
+        <th>点击</th>
+        <th>是否显示</th>
+        <th width="5%">排序</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data" id="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.title}</td>
+            <td>{$vo.link}</td>
+            <td>
+                <a href="{$vo.link}" target="_blank"><img src="__UPLOAD__{$vo.icon}" style="max-width: 180px;"></a>
+            </td>
+            <td>{$vo.click}</td>
+            <td>
+                {if condition="($vo.is_show == 1)"}
+                <a class="is_show" onclick="stopBubbling(event);" href="__URL__link/isDisplay?id={$vo.id}&is_show=0"><i class="iconfont">&#xe783;</i></a>
+                {else /}
+                <a class="is_hide" onclick="stopBubbling(event);" href="__URL__link/isDisplay?id={$vo.id}&is_show=1"><i class="iconfont">&#xe6e9;</i></a>
+                {/if}
+            </td>
+            <td><input class="order" onclick="stopBubbling(event);" type="text" data-id="{$vo.id}" value="{$vo.order}"></td>
+            <td>
+                <a href="__URL__link/show?id={$vo.id}" class="btn blue">编辑</a>
+                <a href="__URL__link/delete?id={$vo.id}" class="btn yellow delete">删除</a>
+            </td>
+        </tr>
+    {/volist}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="8" class="total">
+            共计 {$count} 条数据
+        </td>
+    </tr>
+    <tr>
+        <td colspan="8">
+            {$data->render()}
+        </td>
+    </tr>
+    </tfoot>
+</table>
+
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script>
+    //ajax 修改内容排序
+    $('.order').change(function () {
+        $id = $(this).attr('data-id');
+        $order = {'order':$(this).val(),'id':$id};
+        console.log($order);
+        $.ajax({
+            url:'__URL__link/isDisplay',
+            data:$order,
+            type:'post',
+            success:function () {
+                window.location.href = '__URL__link/index'
+            }
+        })
+    })
+
+</script>
+{include file='public/footer' /}

@@ -1,0 +1,94 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>站点信息</h4>
+</div>
+<form action="__URL__option/update" method="post" class="updateOptionForm">
+    <div class="col-md-6">
+        <div class="panel blue-border">
+            <div class="panel-title">
+                <h5>基本信息</h5>
+            </div>
+            <div class="panel-body">
+                <input type="hidden" name="id" value="1">
+                <div class="form-group-block">
+                    <label>网站名称 <i>*</i></label>
+                    <input type="text" name="web_name" value="{$data.web_name}" required placeholder="栏目名称">
+                </div>
+                <div class="form-group-block">
+                    <label>网站副标题 <i>*</i></label>
+                    <input type="text" name="web_subName" value="{$data.web_subName}" placeholder="网站副标题">
+                </div>
+                <div class="form-group-block">
+                    <label>网站域名 <i>*</i></label>
+                    <input type="text" name="web_domain" value="{$data.web_domain}" data-rule-url="true" required data-msg-url="请输入正确格式，如：http://www.domain.com/" placeholder="网站域名">
+                </div>
+                <div class="form-group-block">
+                    <label>备案号 <i>*</i></label>
+                    <input type="text" name="web_icp" value="{$data.web_icp}" required placeholder="备案号">
+                </div>
+                <div class="form-group-block">
+                    <label>sitemap <i>*</i></label>
+                    <select name="web_sitemap">
+                        {if condition="($data.web_sitemap == 1)"}
+                            <option value="1" selected>开</option>
+                            <option value="0">关</option>
+                        {else /}
+                            <option value="1">开</option>
+                            <option value="0" selected>关</option>
+                        {/if}
+                    </select>
+                </div>
+
+                <div class="panel-title">
+                    <h5>百度云跟帖设置</h5>
+                </div>
+                <div class="form-group-block">
+                    <label>APP KEY <i>*</i></label>
+                    <input type="text" name="wangyi_appkey" value="{$data.wangyi_appkey}"  placeholder="备案号">
+                </div>
+            </div>
+            <div class="panel-title">
+                <h5>SEO优化</h5>
+            </div>
+            <div class="form-group-block">
+                <label>关键词</label>
+                <input type="text" name="web_seo" value="{$data.web_seo}" required placeholder="关键词">
+            </div>
+            <div class="form-group-block">
+                <label>描述</label>
+                <input type="text" name="web_description" value="{$data.web_description}" required placeholder="描述">
+            </div>
+        </div>
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl" type="reset">重置</button>
+    </div>
+</form>
+<div class="col-md-6">
+    <div class="panel blue-border">
+        <div class="panel-title">
+            <h5>百度云跟帖预览</h5>
+        </div>
+        <div id="cloud-tie-wrapper" class="cloud-tie-wrapper">请设置好您的网易云跟帖APP KEY号码后刷新页面，测试是否设置成功！</div>
+        <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+        <script>
+            var cloudTieConfig = {
+                url: "",
+                sourceId: "1",
+                productKey: "{$data.wangyi_appkey}",
+                target: "cloud-tie-wrapper"
+            };
+            var yunManualLoad = true;
+            Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+        </script>
+        <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+    </div>
+</div>
+
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+
+{include file='public/footer' /}

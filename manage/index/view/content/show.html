@@ -1,0 +1,134 @@
+{include file='public/header' /}
+
+<link href="__ADMIN__css/github-markdown.css" rel="stylesheet"></link>
+<script src="__ADMIN__js/showdown.min.js"></script>
+
+<div class="table-title">
+    <h4>新建内容</h4>
+</div>
+<form action="__URL__content/update" method="post" class="addContentForm" enctype="multipart/form-data">
+    <div class="col-md-2" style="padding-right: 20px;">
+        <div class="panel blue-border">
+            <div class="panel-title">
+                <h5>基本信息</h5>
+            </div>
+            <div class="panel-body">
+                <input type="hidden" name="id" value="{$data.id}">
+                <div class="form-group-block">
+                    <label>文章标题 <i>*</i></label>
+                    <input type="text" name="title" value="{$data.title}" required placeholder="栏目名称">
+                </div>
+                <div class="form-group-block">
+                    <label>栏目 <i>*</i></label>
+                    <select name="cate_id" required>
+                        {volist name="cate" id="vo"}
+                            {if condition="($data.cate_id == $vo.id)"}
+                                <option value="{$vo.id}" selected>{$vo.spear}{$vo.html}{$vo.cate_name}</option>
+                            {else /}
+                                <option value="{$vo.id}">{$vo.spear}{$vo.html}{$vo.cate_name}</option>
+                            {/if}
+                        {/volist}
+                    </select>
+                </div>
+                <div class="form-group-block">
+                    <label>文章缩略图 <i>*</i></label>
+                    <div class="form-group-merge">
+                        <input id="images" name="images" onchange="readfichier(this);" type="file">
+                        <div class="img-view">
+                            {if condition="($data.images)"}
+                                <img src="__UPLOAD__{$data.images}" alt="">
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-block">
+                    <label>文章描述</label>
+                    <textarea name="desc" rows="4" placeholder="栏目描述">{$data.desc}</textarea>
+                </div>
+            </div>
+            <div class="form-group-block">
+                <label>文章热度</label>
+                <input type="text" name="views" value="{$data.views}" placeholder="栏目排序">
+            </div>
+            <div class="form-group-block">
+                <label>文章排序</label>
+                <input type="text" name="order" value="{$data.order}" placeholder="栏目排序">
+            </div>
+            <div class="form-group-block">
+                <label>是否发布 <i>*</i></label>
+                <select name="is_show" id="pid">
+                    {if condition="($data.is_show == 1)"}
+                        <option value="1" selected>发布</option>
+                        <option value="0">草稿</option>
+                    {else /}
+                        <option value="1">发布</option>
+                        <option value="0" selected>草稿</option>
+                    {/if}
+                </select>
+            </div>
+            <div class="panel-title">
+                <h5>SEO优化</h5>
+            </div>
+            <div class="form-group-block">
+                <label>关键词</label>
+                <input type="text" name="keywords" value="{$data.keywords}" placeholder="关键词">
+            </div>
+            <div class="form-group-block">
+                <label>描述</label>
+                <input type="text" name="description" value="{$data.description}" placeholder="描述">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 ">
+        <div class="panel blue-border clearfix">
+            <div class="col-md-6">
+                <div id="markdown-body"><span class="demo">markdown 显示区域</span></div>
+            </div>
+            <div class="col-md-6 ">
+                <textarea id="markdown-content" required name="content" style="width: 100%;padding:15px;" onkeyup="compile();" placeholder="markdown 书写区域">{$data.content}</textarea>
+            </div>
+        </div>
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl">重置</button>
+    </div>
+</form>
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+
+<script type="text/javascript">
+    BodyOnLoad();
+    compile();
+    // 预览图片
+    function readfichier(e) {
+        if (window.FileReader) {
+            var file = e.files[0];
+            var reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                var image = new Image;
+                image.src = e.target.result;
+                image.onload = function () {
+                    $('.img-view').html(image);
+                }
+            }
+        }
+    }
+    function compile(){
+        var converter = new showdown.Converter(),
+            text = document.getElementById("markdown-content").value;
+        html = converter.makeHtml(text);
+        document.getElementById("markdown-body").innerHTML = html;
+    }
+    function BodyOnLoad()
+    {
+        var markdown_content = document.getElementById("markdown-content");
+        var markdown_body = document.getElementById("markdown-body");
+        var height = window.innerHeight - 200;
+        markdown_content.style.height=height+'px';
+        markdown_body.style.height=height+'px';
+    }
+</script>
+
+{include file='public/footer' /}

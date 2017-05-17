@@ -1,0 +1,70 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>博主信息</h4>
+</div>
+<form action="__URL__admin/option_update" method="post" class="updateAdminOptionForm">
+    <div class="col-md-6">
+        <div class="panel blue-border">
+            <div class="panel-body">
+                <div class="form-group-block">
+                    <input type="hidden" name="id" value="{$data.id}">
+                    <label>城市</label>
+                    <input type="text" id="cityText" value="{$data.city}" onchange="cityCode();" required placeholder="常驻城市，影响后台欢迎页面城市天气">
+                    <select id="city_list" name="cityInfo" size="10" style="max-height:200px;height:auto;min-height: 50px;">
+                    </select>
+                </div>
+                <div class="form-group-block">
+                    <input type="hidden" name="id" value="{$data.id}">
+                    <label>站长邮箱</label>
+                    <input type="text" name="email" value="{$data.email}" required data-rule-email="true" placeholder="站长邮箱">
+                </div>
+                <div class="form-group-block">
+                    <label>底部版权信息</label>
+                    <input type="text" name="footer_info" value="{$data.footer_info}" required placeholder="底部版权信息">
+                </div>
+                <div class="form-group-block">
+                    <label>简介</label>
+                    <textarea name="personal" cols="30" rows="10" required placeholder="个人简介..">{$data.personal}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl" type="reset">重置</button>
+    </div>
+</form>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+
+<script>
+    $('#city_list').hide();
+    function cityCode() {
+        $val = $('#cityText').val();
+        $select = $('#city_list');
+        $.ajax({
+            url : '__URL__admin/city',
+            type : 'post',
+            data : {'val':$val},
+            success:function (data) {
+                if(!data.length == 0){
+                    $select.show();
+                    $select.html('');
+                    for(var i = 0; i < data.length; i++){
+                        console.log(data[i].city + data[i].code);
+                        $select.append('<option value="'+data[i].code+'|'+data[i].city+'">'+data[i].city+'</option>');
+                    }
+                }else {
+                    $select.show();
+                    $select.html('');
+                    $select.append('<option value="" disabled>找不到该城市，请重新输入</option>');
+                }
+            }
+        })
+    }
+</script>
+
+{include file='public/footer' /}

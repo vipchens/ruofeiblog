@@ -1,42 +1,161 @@
 {include file='public/header' /}
 
 <div class="table-title">
-    <h4>内容管理</h4>
+    {if condition="(session('cate_id'))"}
+        {volist name="cate" id="vo"}
+            {if condition="(session('cate_id') == $vo.id)"}
+                <h4>{$vo.cate_name}</h4>
+            {/if}
+        {/volist}
+    {else /}
+        <h4>所有内容</h4>
+    {/if}
 </div>
 
 <div class="table-function col-md-offset-2 col-md-10">
-    <a href="add-content.html" class="botton btn blue ">新建内容</a>
-    <a href="add-content-makedown.html" class="botton btn blue ">新建makedown</a>
-    <div class="form-group-inline pull-right">
-        <label>关键词</label>
-        <input type="text" value="">
-        <a href="#" class="gery">搜索</a>
-    </div>
-    <div class="form-group-inline pull-right">
-        <label>内容排序</label>
-        <select name="order" id="">
-            <option value="1">更新时间 新 > 旧</option>
-            <option value="1">更新时间 旧 > 新</option>
-            <option value="1">内容ID 大 > 小</option>
-            <option value="1">内容ID 小 > 大</option>
-            <option value="1">添加时间 新 > 旧</option>
-            <option value="1">添加时间 旧 > 新</option>
-            <option value="1">热度 多 > 少</option>
-            <option value="1">热度 少 > 多</option>
-        </select>
-    </div>
-    <div class="form-group-inline pull-right">
-        <label>状态</label>
-        <select name="order">
-            <option value="1">显示</option>
-            <option value="1">不显示</option>
-        </select>
-    </div>
+    <form action="__URL__content/search" method="post" class="searchContentForm" enctype="multipart/form-data">
+        <a href="add-content.html" class="botton btn blue ">新建内容</a>
+        <a href="__URL__content/add" class="botton btn blue ">新建makedown</a>
+        <div class="form-group-inline pull-right">
+            <label>关键词</label>
+            {if condition="($conditions)"}
+                {if condition="($conditions.keywords)"}
+                    <input type="text" name="keywords" value="{$conditions.keywords}">
+                {else /}
+                    <input type="text" name="keywords" value="">
+                {/if}
+            {else /}
+                <input type="text" name="keywords" value="">
+            {/if}
+            <button href="#" class="btn red">筛选</button>
+        </div>
+        <div class="form-group-inline pull-right">
+            <label>内容排序</label>
+            <select name="list">
+            {if condition="($conditions)"}
+                {if condition="($conditions.list == 'update_time|desc' || $conditions.list == '')"}
+                        <option value="update_time|desc" selected>更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'update_time|asc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc" selected>更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'id|desc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc" selected>内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'id|asc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc" selected>内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'create_time|desc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc" selected>添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'create_time|asc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc" selected>添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'views|desc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc" selected>热度 多 > 少</option>
+                        <option value="views|asc">热度 少 > 多</option>
+                {elseif condition="($conditions.list == 'views|asc')"}
+                        <option value="update_time|desc">更新时间 新 > 旧</option>
+                        <option value="update_time|asc">更新时间 旧 > 新</option>
+                        <option value="id|desc">内容ID 大 > 小</option>
+                        <option value="id|asc">内容ID 小 > 大</option>
+                        <option value="create_time|desc">添加时间 新 > 旧</option>
+                        <option value="create_time|asc">添加时间 旧 > 新</option>
+                        <option value="views|desc">热度 多 > 少</option>
+                        <option value="views|asc" selected>热度 少 > 多</option>
+                {/if}
+            {else /}
+                <option value="update_time|desc" selected>更新时间 新 > 旧</option>
+                <option value="update_time|asc">更新时间 旧 > 新</option>
+                <option value="id|desc">内容ID 大 > 小</option>
+                <option value="id|asc">内容ID 小 > 大</option>
+                <option value="create_time|desc">添加时间 新 > 旧</option>
+                <option value="create_time|asc">添加时间 旧 > 新</option>
+                <option value="views|desc">热度 多 > 少</option>
+                <option value="views|asc">热度 少 > 多</option>
+            {/if}
+
+
+
+            </select>
+        </div>
+        <div class="form-group-inline pull-right">
+            <label>状态</label>
+            <select name="is_show">
+            {if condition="($conditions)"}
+                {if condition="($conditions.is_show == 'all')"}
+                    <option value="all" selected>所有</option>
+                    <option value="1">显示</option>
+                    <option value="0">不显示</option>
+                {elseif condition="($conditions.is_show == 1)"}
+                    <option value="all">所有</option>
+                    <option value="1" selected>显示</option>
+                    <option value="0">不显示</option>
+                {elseif condition="($conditions.is_show == 0)"}
+                    <option value="all">所有</option>
+                    <option value="1">显示</option>
+                    <option value="0" selected>不显示</option>
+
+                {/if}
+            {else /}
+                <option value="all" selected>所有</option>
+                <option value="1">显示</option>
+                <option value="0">不显示</option>
+            {/if}
+            </select>
+        </div>
+    </form>
 </div>
 <ul class="cate-tree col-md-2">
-    <li>栏目列表</li>
+    <li><a href="__URL__content/">所有内容</a></li>
     {volist name="cate" id="vo"}
-        <li><a href="#">{$vo.spear}{$vo.html}{$vo.cate_name}</li>
+        {if condition="(session('cate_id') == $vo.id)"}
+            <li class="selected"><a href="__URL__content/cateList?id={$vo.id}">{$vo.spear}{$vo.html}{$vo.cate_name}</a></li>
+        {else /}
+            <li><a href="__URL__content/cateList?id={$vo.id}">{$vo.spear}{$vo.html}{$vo.cate_name}</a></li>
+        {/if}
     {/volist}
 </ul>
 <table class="table-body col-md-10">
@@ -52,71 +171,70 @@
         </tr>
     </thead>
     <tbody class="content-body">
-        {volist name="data" id="vo"}
-            <tr>
-                <td><input type="checkbox" name="{$vo.id}" class="select-item"></td>
-                <td>{$vo.id}</td>
-                <td class="content-title">{$vo.title}</td>
-                <td>{$vo.views}</td>
-                <td><a href="#"><i class="iconfont">&#xe783;</i></a></td>
-                <td><input class="order" type="text" data-id="{$vo.id}" value="{$vo.order}"></td>
-                <td>
-                    <a href="#" class="btn rose" value="">查看</a>
-                    <a href="#" class="btn blue" value="">编辑</a>
-                    <a href="#" class="btn yellow delete" data-id="{$vo.id}" value="">删除</a>
-                </td>
-            </tr>
-        {/volist}
+    {if condition="($count == 0)"}
+    <tr>
+        <td colspan="7">没有数据!</td>
+    </tr>
+    {else /}
+    {volist name="data" id="vo"}
+        <tr>
+            <td><input type="checkbox" data-id="{$vo.id}" name="{$vo.id}" class="select-item"></td>
+            <td>{$vo.id}</td>
+            <td class="content-title">
+                {if condition="($vo.images)"}
+                    <a class="is_images" data-img="{$vo.images}" href="#" onclick="stopBubbling(event);">{$vo.title} <i class="iconfont">&#xe610;</i></a>
+                {else /}
+                    <a href="#" onclick="stopBubbling(event);">{$vo.title}</a>
+                {/if}
+            </td>
+            <td>{$vo.views}</td>
+            <td>
+                {if condition="($vo.is_show == 1)"}
+                <a class="is_show" onclick="stopBubbling(event);" href="__URL__content/isDisplay?id={$vo.id}&is_show=0"><i class="iconfont">&#xe783;</i></a>
+                {else /}
+                <a class="is_hide" onclick="stopBubbling(event);" href="__URL__content/isDisplay?id={$vo.id}&is_show=1"><i class="iconfont">&#xe6e9;</i></a>
+                {/if}
+            </td>
+            <td><input class="order" onclick="stopBubbling(event);" type="text" data-id="{$vo.id}" value="{$vo.order}"></td>
+            <td>
+                <a href="#" class="btn rose" value="">查看</a>
+                <a href="__URL__content/show?id={$vo.id}" class="btn blue" value="">编辑</a>
+                <a href="__URL__content/delete?id={$vo.id}" class="btn yellow delete" data-id="{$vo.id}" value="">删除</a>
+            </td>
+        </tr>
+    {/volist}
+    {/if}
     </tbody>
     <tfoot>
         <tr>
             <td class="copy-move" colspan="5">
                 <div class="form-group-inline">
-                    <select name="pid" class="f">
-                        <option value="1">== 选择栏目 ==</option>
+                    <select class="cate-id" name="pid" class="f">
+                        <option value="">== 选择栏目 ==</option>
                         {volist name="cate" id="vo"}
-                            <option>{$vo.spear}{$vo.html}{$vo.cate_name}</option>
+                            <option value="{$vo.id}">{$vo.spear}{$vo.html}{$vo.cate_name}</option>
                         {/volist}
                     </select>
-                    <a class="gery" href="#">移动</a>
-                    <a class="gery" href="#">复制</a>
-                    <a class="gery" href="#">发布</a>
-                    <a class="gery" href="#">草稿</a>
-                    <a class="gery" href="#">删除</a>
+                    <a class="gery id-move" href="#">移动</a>
+                    <a class="gery id-copy" href="#">复制</a>
+                    <a class="gery id-show" href="#">发布</a>
+                    <a class="gery id-hide" href="#">草稿</a>
+                    <a class="gery id-delete" href="#">删除</a>
                     <div style="display: none;" class="selectTotal">已选中 <span> </span> 条数据</div>
                 </div>
             </td>
             <td colspan="2" class="total">
-                共计 310 条数据 每页 15条 数据
+                共计 {$count} 条数据
             </td>
         </tr>
         <tr>
             <td colspan="6">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li>
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li class="active"><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                {$data->render()}
             </td>
         </tr>
     </tfoot>
 </table>
 <script src="__ADMIN__js/index.js"></script>
-
 <script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
 <script>
     //ajax 修改内容排序
@@ -155,6 +273,127 @@
     },function () {
         $('.cate-img-view').remove()
     })
+
+    $id_array = '';
+    function select_id(data) {
+        $id_array = data;
+        return $id_array;
+    }
+
+    $move = $('.id-move');
+    $copy = $('.id-copy');
+    $show = $('.id-show');
+    $hide = $('.id-hide');
+    $delete = $('.id-delete');
+
+    $cate = $('.cate-id');
+
+    $move.click(function () {
+        $cate_id = $cate.find("option:selected").val();
+
+        if( $id_array == '' || $cate_id == ''){
+            alert('请先文章和操作栏目!');
+        }else{
+            $data = {'id': $id_array , 'cate_id' : $cate_id};
+            $.ajax({
+                url : '__URL__content/batch_move',
+                data : $data,
+                type:'post',
+                success:function (data) {
+                    alert(data.msg);
+                    window.location.href = '__URL__content/index'
+                }
+            })
+        }
+    })
+
+    $copy.click(function () {
+        $cate_id = $cate.find("option:selected").val();
+        if( $id_array == '' || $cate_id == ''){
+            alert('请先文章和操作栏目!');
+        }else{
+            $data = {'id': $id_array , 'cate_id' : $cate_id};
+            $.ajax({
+                url : '__URL__content/batch_copy',
+                data : $data,
+                type:'post',
+                success:function (data) {
+                    alert(data.msg);
+                    window.location.href = '__URL__content/index'
+                }
+            })
+        }
+    })
+
+    $delete.click(function () {
+        if( $id_array == ''){
+            alert('请选择要删除的文章!');
+        }else{
+            $data = {'id': $id_array};
+            $.ajax({
+                url : '__URL__content/batch_delete',
+                data : $data,
+                type:'post',
+                success:function (data) {
+                    alert(data.msg);
+                    window.location.href = '__URL__content/index'
+                }
+            })
+        }
+    })
+
+    $show.click(function () {
+        if( $id_array == ''){
+            alert('请选择要删除的文章!');
+        }else{
+            $data = {'id': $id_array};
+            $.ajax({
+                url : '__URL__content/batch_show',
+                data : $data,
+                type:'post',
+                success:function (data) {
+                    alert(data.msg);
+                    window.location.href = '__URL__content/index'
+                }
+            })
+        }
+    })
+
+    $hide.click(function () {
+        if( $id_array == ''){
+            alert('请选择要删除的文章!');
+        }else{
+            $data = {'id': $id_array};
+            $.ajax({
+                url : '__URL__content/batch_hide',
+                data : $data,
+                type:'post',
+                success:function (data) {
+                    alert(data.msg);
+                    window.location.href = '__URL__content/index'
+                }
+            })
+        }
+    })
+
+    $('.content-title .is_images').hover(function () {
+        $img = $(this).attr('data-img');
+        if($img){
+            $(this).append('<div class="img-postion"><img style="position: absolute;left:20%;top:0px;max-width: 180px;border:3px solid #fff;" class="cate-img-view" src="__UPLOAD__' + $img +'" /></div>')
+        }
+    },function () {
+//        $('.img-postion').remove()
+    })
+
+    //阻止事件 冒泡传播
+    function stopBubbling(e) {
+        e = window.event || e;
+        if (e.stopPropagation) {
+            e.stopPropagation();      //阻止事件 冒泡传播
+        } else {
+            e.cancelBubble = true;   //ie兼容
+        }
+    }
 </script>
 
 {include file='public/footer' /}

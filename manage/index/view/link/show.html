@@ -1,0 +1,86 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>新建友情链接</h4>
+</div>
+<form action="__URL__link/update" method="post" class="updateLinkForm" enctype="multipart/form-data">
+    <div class="col-md-6" style="padding-right: 20px;">
+        <div class="panel blue-border">
+            <div class="panel-body">
+                <div class="form-group-block">
+                    <input type="hidden" name="id" value="{$data.id}">
+                    <label>链接标题 <i>*</i></label>
+                    <input type="text" name="title" required value="{$data.title}" placeholder="链接标题">
+                </div>
+                <div class="form-group-block">
+                    <label>地址 <i>*</i></label>
+                    <input type="text" name="link" required value="{$data.link}" placeholder="链接地址，如https://www.baidu.com/">
+                </div>
+                <div class="form-group-block">
+                    <label>链接图标 <i>*</i></label>
+                    <div class="form-group-merge">
+                        <input id="images" name="icon" onchange="readfichier(this);" type="file">
+                        <div class="img-view">
+                            {if condition="($data.icon)"}
+                                <img src="__UPLOAD__{$data.icon}" alt="">
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group-block">
+                <label>链接排序</label>
+                <input type="text" name="order" value="{$data.order}" placeholder="栏目排序">
+            </div>
+            <div class="form-group-block">
+                <label>是否显示 <i>*</i></label>
+                <select name="is_show">
+                    <option value="1" selected>发布</option>
+                    <option value="0">草稿</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn red xl">保存</button>
+        <button class="btn blue xl" type="reset">重置</button>
+    </div>
+</form>
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+<script src="__ADMIN__js/form-validate.js"></script>
+
+<script type="text/javascript">
+    BodyOnLoad();
+
+    // 预览图片
+    function readfichier(e) {
+        if (window.FileReader) {
+            var file = e.files[0];
+            var reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                var image = new Image;
+                image.src = e.target.result;
+                image.onload = function () {
+                    $('.img-view').html(image);
+                }
+            }
+        }
+    }
+    function compile(){
+        var converter = new showdown.Converter(),
+            text = document.getElementById("markdown-content").value;
+        html = converter.makeHtml(text);
+        document.getElementById("markdown-body").innerHTML = html;
+    }
+    function BodyOnLoad()
+    {
+        var markdown_content = document.getElementById("markdown-content");
+        var markdown_body = document.getElementById("markdown-body");
+        var height = window.innerHeight - 200;
+        markdown_content.style.height=height+'px';
+        markdown_body.style.height=height+'px';
+    }
+</script>
+
+{include file='public/footer' /}

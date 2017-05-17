@@ -1,0 +1,55 @@
+{include file='public/header' /}
+
+<div class="table-title">
+    <h4>帐号管理</h4>
+</div>
+<div class="table-function">
+    <a href="__URL__admin/add" class="botton btn blue">新建管理员帐号</a>
+</div>
+<table class="table-body">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>管理员名称</th>
+        <th>管理员帐号</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data" id="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.nickname}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.create_time}</td>
+            <td>
+                <a href="__URL__admin/show?id={$vo.id}" class="btn blue" value="编辑">修改密码</a>
+                <a href="javascript:void(0);" data-id="{$vo.id}" class="btn yellow delete">删除</a>
+            </td>
+        </tr>
+    {/volist}
+    </tbody>
+</table>
+
+<script src="__ADMIN__js/jquery-2.1.1.min.js"></script>
+<script src="__ADMIN__plus/jquery.validate/jquery.validate.js"></script>
+
+<script>
+    //ajax 删除数据
+    $('.delete').on('click',function () {
+        $id = {'id':$(this).attr('data-id')};
+        if(confirm("确定要删除吗 ？")){
+            $.ajax({
+                url:'__URL__admin/delete',
+                data:$id,
+                type:'post',
+                success:function () {
+                    window.location.href = '__URL__admin/index'
+                }
+            })
+        }
+    })
+</script>
+
+{include file='public/footer' /}

@@ -34,6 +34,17 @@ class Category extends Islogin
         $this->assign('data',$data);
         return $this->fetch();
     }
+    public function showlink()
+    {
+        $cate = Db::name('category')->where('id','<>',input('id'))->select();
+        $cate = tree($cate);
+
+        $data = Db::name('category')->find(input('id'));
+
+        $this->assign('cate',$cate);
+        $this->assign('data',$data);
+        return $this->fetch();
+    }
     public function update()
     {
         $data = input('post.');
@@ -52,6 +63,13 @@ class Category extends Islogin
             $data['images']='';
         }
         Db::name('category')->update($data);
+
+        if(input('link')){
+            optionlog('更新 连接:'.input('link'));
+        }else{
+            optionlog('更新 栏目id:'.input('id'));
+        }
+
         $this->redirect('category/index');
     }
 
@@ -59,17 +77,37 @@ class Category extends Islogin
         $data = input('post.');
 
         Db::name('category')->insert($data);
+
+        if(input('link')){
+            optionlog('添加 连接:'.input('cate_name').'---'.input('link'));
+        }else{
+            optionlog('添加 栏目:'.input('cate_name'));
+        }
+
         $this->redirect('category/index');
     }
     public function isDisplay()
     {
         $data = input('param.');
         Db::name('category')->update($data);
+
+        if(input('is_show')==0){
+            optionlog('隐藏分类id:'.input('id'));
+        }else{
+            optionlog('显示分类id:'.input('id'));
+        }
+
         $this->redirect('category/index');
     }
 
     public function delete(){
         $data = input('post.');
         Db::name('category')->delete($data);
+
+        if(input('type')==4){
+            optionlog('删除连接id:'.input('id'));
+        }else{
+            optionlog('删除分类id:'.input('id'));
+        }
     }
 }
